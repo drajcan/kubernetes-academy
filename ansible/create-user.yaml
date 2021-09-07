@@ -1,0 +1,46 @@
+---
+- name: Create user
+  hosts: all
+  become: true
+
+  vars:
+#    username:        "{{ lookup ('env', 'ANS_USERNAME') }}"
+#    public_key_path: "{{ lookup ('env', 'ANS_PUBLIC_KEY_PATH' }}"
+
+    username:        "{{ username }}"
+    public_key_path: "{{ public_key_path }}"
+
+  tasks:
+  - name: Add the user 'drajcan'
+    ansible.builtin.user:
+      name:   "{{ username }}"
+      shell:  /bin/bash
+      home:   "/home/{{ username }}"
+      groups: adm,sudo
+      append: yes
+      force:  true
+      state:  present
+
+  - name: Create '.ssh' directory in user home directory
+    ansible.builtin.file:
+      path:  "/home/{{ username }}/.ssh"
+      owner: "{{ username }}"
+      group: "{{ username }}"
+      mode:  '0755'
+      state: directory
+
+  - name: Copy public key to authorized_keys
+    ansible.builtin.copy:
+      src:  "{{ public_key_path }}"
+      dest: "/home/{{ username }}/.ssh/authorized_keys"
+      owner: "{{ username }}"
+      group: "{{ username }}"
+      mode: '0600'
+      
+  - name: Copy 100-user to /etc/sudoers.d/
+    ansible.builtin.copy:
+      content: "{{ username }} ALL=(ALL) NOPASSWD:ALL"
+      dest: "/etc/sudoers.d/{{ username }}"
+      owner: root
+      group: root
+      mode: '0400'

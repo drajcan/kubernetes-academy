@@ -1,0 +1,8 @@
+---
+- name: Using Azure collection
+  hosts: localhost
+  tasks:
+    - name: Get facts for one resource group
+      azure_rm_resourcegroup_info:
+        name: 'k8s-academy-tfm-drajcan-rg-dev'
+        list_resources: yes

@@ -1,0 +1,8 @@
+---
+- hosts: vm1
+  become: true
+  
+  collections:
+    - nginxinc.nginx_core
+  roles:
+    - role: nginx
