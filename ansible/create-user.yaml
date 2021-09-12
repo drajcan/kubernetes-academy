@@ -11,7 +11,7 @@
     public_key_path: "{{ public_key_path }}"
 
   tasks:
-  - name: Add the user 'drajcan'
+  - name: Add the user "{{ username }}"
     ansible.builtin.user:
       name:   "{{ username }}"
       shell:  /bin/bash
