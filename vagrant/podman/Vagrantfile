@@ -1,0 +1,29 @@
+VAGRANTFILE_API_VERSION = "2"
+
+BOX = "ubuntu/focal64"
+IP = "10.0.0.125"
+HOSTNAME = "podman.vagrant"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+### podman ###
+  config.vm.define "podman" do |config|
+    config.vm.box = BOX
+
+    config.vm.provider "virtualbox" do |v|
+      v.gui = false
+      v.memory = 2048
+      v.cpus = 1
+    end
+
+    config.vm.network "private_network", ip: IP
+
+    config.vm.hostname = HOSTNAME
+
+    config.vm.provision "shell", path: "scripts/base.sh", privileged: true
+    config.vm.provision "shell", path: "scripts/install.sh", privileged: true
+
+    config.vm.synced_folder "docker/", "/home/vagrant/docker"
+  end
+
+end

@@ -21,7 +21,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.hostname = HOSTNAME
 
     config.vm.provision "shell", path: "scripts/base.sh", privileged: true
-    config.vm.provision "shell", path: "scripts/install-docker.sh", privileged: true
+    config.vm.provision "shell", path: "scripts/install.sh", privileged: true
+
+    config.vm.synced_folder "docker/", "/home/vagrant/docker"
   end
 
 end
