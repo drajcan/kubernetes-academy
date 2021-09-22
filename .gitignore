@@ -2,6 +2,7 @@
 *.tfvars
 .terraform/
 terraform.tfstate.d/
+terraform.tfstate*
 
 ### Ansible
 inventory-*
